@@ -3,7 +3,7 @@ const {db2} = require('../config/db');
 const  Producto  = require("../modelos/producto")(db2);
 const routerProductos = Router();
 const mongoose = require("mongoose");
-
+const upload = require("../config/storage");
 
 
 routerProductos.get("/", async (req, res) => {
@@ -25,7 +25,7 @@ routerProductos.get("/:id", async (req, res) => {
   res.send(producto);
 });
 
-routerProductos.post("/", async (req, res) => {
+/* routerProductos.post("/", async (req, res) => {
 
   let producto = new Producto({
     nombre: req.body.nombre,
@@ -41,6 +41,38 @@ routerProductos.post("/", async (req, res) => {
   if (!producto) return res.status(500).send("El producto no pudo ser creado!");
 
   res.send(producto);
+}); */
+
+routerProductos.post("/", upload.array("imagen", 5), async (req, res) => {
+  if (!req.files) {
+    return res.status(400).send({ Error: "No se ha subido ningún archivo." });
+  }
+  const files = req.files;
+  let imagenesUrls = [];
+  if (files) {
+    imagenesUrls = files.map((file) => {
+      const filename = file.filename; // Obtenemos el filename de cada archivo
+      return `http://localhost:3001/public/${filename}`;
+    });
+
+    let producto = new Producto({
+      nombre: req.body.nombre,
+      categoria: req.body.categoria,
+      marca: req.body.marca,
+      precio: req.body.precio,
+      stock: req.body.stock,
+      descripcion: req.body.descripcion,
+      imagen: imagenesUrls,
+    });
+
+    await producto.validate();
+    await producto.save();
+
+    if (!producto)
+      return res.status(500).send("El producto no pudo ser creado!");
+
+    res.send(producto);
+  }
 });
 
 routerProductos.put("/:id", async (req, res) => {

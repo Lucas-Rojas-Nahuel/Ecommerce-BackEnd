@@ -13,9 +13,10 @@ const mercadoPagoClient = new MercadoPagoConfig({
 
 routerMercadoPago.post("/", async (req, res) => {
   try {
-    const {ordenId, cart} = req.body;
+    const {ordenId, productsList, idProducts} = req.body;
+    
     const body = {
-      items: cart.map((item) => ({
+      items: productsList.map((item) => ({
         title: item.nombre,
         quantity: item.quantity,
         unit_price: item.precio,
@@ -23,7 +24,7 @@ routerMercadoPago.post("/", async (req, res) => {
       })),
       back_urls: {
         success: `https://compu-gamer.netlify.app/success`,
-        failure: `https://compu-gamer.netlify.app/failure?ordenId=${ordenId}`,
+        failure: `https://compu-gamer.netlify.app/failure?ordenId=${ordenId}&idProducts=${idProducts}`,
         pending: `https://compu-gamer.netlify.app/pending`,
       },
       auto_return: "approved",
