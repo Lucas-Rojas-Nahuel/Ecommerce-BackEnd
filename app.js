@@ -32,7 +32,7 @@ const rutasUsuarios = require("./rutas/usuarios.js");
 const routerMercadoPago = require("./rutas/marcadoPago.js");
 
 const authJwt = require("./helpers/jwt.js");
-const errorHandler = require("./helpers/error-handler.js");
+/* const errorHandler = require("./helpers/error-handler.js"); */
 const routerOrdenes = require("./rutas/ordenes.js");
 const webhookRouter = require('./rutas/webhook.js')
 
