@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 app.use(authJwt);
 /* app.use(errorHandler); */
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
   console.log("Server is running on http://localhost:3001");
 })
   
