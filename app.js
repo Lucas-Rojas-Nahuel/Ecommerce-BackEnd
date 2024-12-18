@@ -9,7 +9,7 @@ const {db1, db2} = require('./config/db.js')
 
  
 app.use(cors({
-  origin: "https://compu-gamer.netlify.app", // Permite solicitudes desde tu frontend
+  origin: ['http://localhost:8888',"https://compu-gamer.netlify.app"], // Permite solicitudes desde tu frontend
     methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
     credentials: true, // Si estás utilizando cookies o headers personalizados
 })) 
