@@ -52,7 +52,7 @@ routerProductos.post("/", upload.array("imagen", 5), async (req, res) => {
   if (files) {
     imagenesUrls = files.map((file) => {
       const filename = file.filename; // Obtenemos el filename de cada archivo
-      return `http://localhost:3001/public/${filename}`;
+      return `https://compugamer.up.railway.app/public/${filename}`;
     });
 
     let producto = new Producto({
