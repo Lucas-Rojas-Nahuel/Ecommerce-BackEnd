@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
+const multer = require("multer");
 require("dotenv").config();
 const path = require('path')
 const {db1, db2} = require('./config/db.js')
@@ -14,11 +15,16 @@ app.use(cors({
     credentials: true, // Si estás utilizando cookies o headers personalizados
 })) 
 
-/* app.use(
-  cors({
-    origin: '*', // Permite todos los orígenes
-  })
-); */
+// Configuración de Multer para manejar la carga de imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './imagenes'); //carpeta donde se guardarán las imágenes
+  },
+  filename: (req, file, cb)=>{
+    cb(null, Date.now()+path.extname(file.originalname));
+  }
+});
+const upload=multer({storage:storage});
 
 
 //Middleware
@@ -36,7 +42,13 @@ const errorHandler = require("./helpers/error-handler.js");
 const routerOrdenes = require("./rutas/ordenes.js");
 const webhookRouter = require('./rutas/webhook.js')
 
-
+//Rutas de subida de imágenes
+app.post('/imagenes', upload.single('image'), (req,res)=>{
+  if(!req.file){
+    return res.status(400).send('No file uploaded')
+  }
+  res.send({message:'File uploaded successfully', file: req.file})
+})
 
 app.use(`${process.env.API_URL}/productos`, rutasProductos);
 app.use(`${process.env.API_URL}/usuarios`, rutasUsuarios);
@@ -45,14 +57,8 @@ app.use('/public', express.static(path.join(__dirname, '/imagenes')));
 app.use(`${process.env.API_URL}/create_preference`, routerMercadoPago);
 app.use(`${process.env.API_URL}/webhook`, webhookRouter);
 
-/* app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-}); */
-
-
 app.use(authJwt);
- app.use(errorHandler); 
+app.use(errorHandler); 
 
 app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
   console.log("Server is running on http://localhost:3001");
