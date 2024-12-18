@@ -45,6 +45,10 @@ app.use('/public', express.static(path.join(__dirname, '/imagenes')));
 app.use(`${process.env.API_URL}/create_preference`, routerMercadoPago);
 app.use(`${process.env.API_URL}/webhook`, webhookRouter);
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 
 app.use(authJwt);
