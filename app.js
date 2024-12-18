@@ -8,17 +8,17 @@ const path = require('path')
 const {db1, db2} = require('./config/db.js')
 
  
-/* app.use(cors({
+app.use(cors({
   origin: "https://compu-gamer.netlify.app", // Permite solicitudes desde tu frontend
     methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
     credentials: true, // Si estás utilizando cookies o headers personalizados
-})) */
+})) 
 
-app.use(
+/* app.use(
   cors({
     origin: '*', // Permite todos los orígenes
   })
-);
+); */
 
 
 //Middleware
