@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 
 
 app.use(authJwt);
-app.use(errorHandler);
+/* app.use(errorHandler); */
 
 app.listen(3001, () => {
   console.log("Server is running on http://localhost:3001");
