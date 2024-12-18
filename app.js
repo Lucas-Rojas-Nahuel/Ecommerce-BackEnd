@@ -32,7 +32,7 @@ const rutasUsuarios = require("./rutas/usuarios.js");
 const routerMercadoPago = require("./rutas/marcadoPago.js");
 
 const authJwt = require("./helpers/jwt.js");
-/* const errorHandler = require("./helpers/error-handler.js"); */
+const errorHandler = require("./helpers/error-handler.js"); 
 const routerOrdenes = require("./rutas/ordenes.js");
 const webhookRouter = require('./rutas/webhook.js')
 
@@ -45,14 +45,14 @@ app.use('/public', express.static(path.join(__dirname, '/imagenes')));
 app.use(`${process.env.API_URL}/create_preference`, routerMercadoPago);
 app.use(`${process.env.API_URL}/webhook`, webhookRouter);
 
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
-});
+}); */
 
 
 app.use(authJwt);
-/* app.use(errorHandler); */
+ app.use(errorHandler); 
 
 app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
   console.log("Server is running on http://localhost:3001");
