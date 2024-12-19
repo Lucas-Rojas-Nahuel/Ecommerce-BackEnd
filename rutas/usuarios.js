@@ -44,7 +44,7 @@ routerUsuarios.post("/", async (req, res) => {
 routerUsuarios.post("/login", async (req, res) => {
   const usuario = await Usuario.findOne({ email: req.body.email });
   
-  const secret = process.env.secret;
+  const secret = process.env.JWT_SECRET;
   if (!usuario) {
     return res.status(400).send("Usuario no encontrado!");
   }
