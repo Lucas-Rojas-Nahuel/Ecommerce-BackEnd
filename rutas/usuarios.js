@@ -83,6 +83,7 @@ routerUsuarios.post("/register", async (req, res) => {
 routerUsuarios.put('/:id', async (req, res)=> {
   const {id} = req.params;
   const { nombre, username, email, password, esAdmin } = req.body;
+  
 
   try {
     const updatedUser = await Usuario.findByIdAndUpdate(
