@@ -80,28 +80,26 @@ routerUsuarios.post("/register", async (req, res) => {
   res.send(usuario);
 });
 
-routerUsuarios.put('/:id', async (req, res)=> {
-  const {id} = req.params;
-  const { nombre, username, email, password, esAdmin } = req.body;
-  
-
-  try {
-    const updatedUser = await Usuario.findByIdAndUpdate(
-      id,
-      { nombre, username, email, password, esAdmin },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
-
-    res.status(200).json({ message: "Usuario actualizado", user: updatedUser });
-  } catch (error) {
-    console.error("Error al actualizar usuario:", error);
-    res.status(500).json({ error: "Error al actualizar usuario" });
+routerUsuarios.put("/:id", async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    res.status(400).send("ID de usuario invalido!");
   }
-})
+
+  const usuario = await Usuario.findByIdAndUpdate(
+    req.params.id,
+    {
+      nombre: req.body.nombre,
+      username: req.body.username,
+      email: req.body.email,
+    },
+    { new: true },
+  );
+
+  if (!usuario)
+    return res.status(500).send("El usuario no pudo ser actualizado!");
+
+  res.send(usuario);
+});
 
 routerUsuarios.delete("/:id", (req, res) => {
   Usuario.findOneAndDelete(req.params.id)
