@@ -82,7 +82,7 @@ routerProductos.put("/:id", async (req, res) => {
 });
 
 routerProductos.delete("/:id", (req, res) => {
-  Producto.findOneAndDelete(req.params.id)
+  Producto.findOneAndDelete({ _id: req.params.id })
     .then((producto) => {
       if (producto) {
         return res
